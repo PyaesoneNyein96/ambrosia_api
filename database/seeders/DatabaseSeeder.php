@@ -18,13 +18,14 @@ class DatabaseSeeder extends Seeder
         User::factory(2)->create();
 
         User::create([
-            'name' => 'admin',
+            'name' => null,
             'email' => 'psn@gmail.com',
             'password' =>Hash::make('admin123'),
             'gender' => 'male',
-            'role' => 'admin',
+            'role' => true,
             'phone' => '123',
             'address' => 'yangon',
+            'userToken' => null,
             'email_verified_at' => now(),
         ]);
 

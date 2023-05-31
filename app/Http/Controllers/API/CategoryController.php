@@ -12,10 +12,9 @@ class CategoryController extends Controller
 
     public function list(){
 
+        $data = Category::all();
 
-        $categories = Category::get();
-
-        return response()->json(['categories'=> $categories], 200);
+        return response()->json($data, 200);
     }
 
 }

@@ -5,25 +5,29 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //
+    // SIGN IN -=============================================
 
     public function login(Request $req)
     {
         $user = User::where('email',$req->email)->first();
 
-        if($user){
+        $token = $this->TokenGenerator($user);
+        User::where('email', $req->email)->update(['userToken' => $token]);
 
+        if($user){
             if(Hash::check($req->password, $user->password)){
                 return response()->json([
                     'userInfo' => $user,
-                    'userToken' =>$user->createToken(time())->plainTextToken,
+                    'userToken' =>$token,
                     'auth' => true
                 ], 200);
             }else{
+                // password wrong
                 return response()->json([
                     'userInfo' => null,
                     'auth' =>false
@@ -32,6 +36,7 @@ class AuthController extends Controller
 
 
         }else{
+            // user doesn't exist
             return response()->json([
                   'userInfo' => null,
                   'auth' => false
@@ -40,7 +45,7 @@ class AuthController extends Controller
 
     }
 
-    //Register
+    //Register -=============================================
 
     public function register(Request $req)
     {
@@ -49,21 +54,51 @@ class AuthController extends Controller
 
         $user = User::where('email', $req->email)->first();
 
+        $token = $this->TokenGenerator($user);
+        User::where('email', $user->email)->update(['userToken' => $token]);
+
         return response()->json([
-            'user' => $user,
-            'userToken' => $user->createToken(time())->plainTextToken
+            'userInfo' => $user,
+            'userToken' => $token,
+            'auth' => true
         ], 200);
     }
 
 
 
-    // Data COllect
+    // AUTO_LOGIN -=============================================
+    public function autoLogin(Request $req){
+
+    $user = User::where('userToken', $req->token)->first();
+
+    $token = $this->TokenGenerator($user);
+    User::where('email', $req->email)->update(['userToken' => $token]);
+
+
+    return response()->json([
+        'userInfo' => $user,
+        'userToken' => $token,
+        'auth' => true
+    ], 200);
+
+    }
+
+
+
+
+    // Data COllect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     private function RegCollectData($req){
         return [
-            'name'=>$req->name,
+            'name'=>null,
             'email'=>$req->email,
             'password'=>Hash::make($req->password),
+            'userToken'=> null
         ];
+    }
+
+    // TOKEN GENERATOR XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    private function TokenGenerator($req){
+        return $token = $req->createToken(time())->plainTextToken;
     }
 
 

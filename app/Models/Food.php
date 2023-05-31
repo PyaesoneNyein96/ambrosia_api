@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Food extends Model
 {
@@ -12,6 +13,24 @@ class Food extends Model
     protected $fillable = [
         'name',
         'price',
-        'category_id'
+        'description',
+        'status',
+        'category_id',
+        'tag_id',
+        'image',
+        'type',
+        'created_at'
     ];
+
+    public function Category(){
+        return $this->belongsTo(Category::class);
+    }
+
+    public function User(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function tag(){
+        return $this->belongsToMany(Tag::class,'food_tags', 'food_id', 'tag_id');
+    }
 }
