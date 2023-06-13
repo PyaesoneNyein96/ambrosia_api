@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -16,11 +17,13 @@ class AuthController extends Controller
     {
         $user = User::where('email',$req->email)->first();
 
-        $token = $this->TokenGenerator($user);
-        User::where('email', $req->email)->update(['userToken' => $token]);
 
+
+        // logger($user->toArray());
         if($user){
             if(Hash::check($req->password, $user->password)){
+                $token = $this->TokenGenerator($user);
+                User::where('email', $req->email)->update(['userToken' => $token]);
                 return response()->json([
                     'userInfo' => $user,
                     'userToken' =>$token,
@@ -30,7 +33,8 @@ class AuthController extends Controller
                 // password wrong
                 return response()->json([
                     'userInfo' => null,
-                    'auth' =>false
+                    'auth' =>false,
+                    'message' => 'Your Password is wrong!!'
                 ], 401);
             }
 
@@ -39,7 +43,8 @@ class AuthController extends Controller
             // user doesn't exist
             return response()->json([
                   'userInfo' => null,
-                  'auth' => false
+                  'auth' => false,
+                  'message' => "Your email wasn't register yet !!"
             ], 404);
         }
 
@@ -71,6 +76,8 @@ class AuthController extends Controller
 
     $user = User::where('userToken', $req->token)->first();
 
+    // logger($user->toJson());
+
     $token = $this->TokenGenerator($user);
     User::where('email', $req->email)->update(['userToken' => $token]);
 
@@ -82,7 +89,6 @@ class AuthController extends Controller
     ], 200);
 
     }
-
 
 
 
@@ -99,6 +105,15 @@ class AuthController extends Controller
     // TOKEN GENERATOR XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     private function TokenGenerator($req){
         return $token = $req->createToken(time())->plainTextToken;
+    }
+
+    // Validation XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    private function validation($request){
+
+        Validator::make($request->all, [
+
+        ])->validate();
     }
 
 

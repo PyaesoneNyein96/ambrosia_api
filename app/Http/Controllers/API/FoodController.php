@@ -16,12 +16,11 @@ class FoodController extends Controller
 
 
 
-    // Specific & ALL
+    // Specific & ALL Show
 
     public function getSpecific($id){
 
         if($id == 'All'){
-            // $data = Food::all();
             $data = Food::with( ['tag','category'] )->get();
         }else{
             $data = Food::with('tag')->where('category_id',$id)->get();
@@ -30,7 +29,21 @@ class FoodController extends Controller
         return response()->json($data, 200);
     }
 
+    // Get Food by Type (Drink or Food)
 
+    public function getFoodByType($type){
+
+        if($type == 1){
+        return   $food = Food::with(['tag','category'])->where('type', 1)->get();
+        }else if
+        ($type == 0){
+            return $food = Food::with(['tag','category'])->where('type', 0)->get();
+        }else{
+            return $food = Food::with(['tag','category'])->get();
+        }
+
+
+    }
 
 
     // Create FOOD from frontend =====================================================================
@@ -51,9 +64,10 @@ class FoodController extends Controller
             'price' =>$request->price,
             'status' => 1,
             'description' =>$request->description,
+            'excerpt' =>$request->excerpt,
             'category_id' =>$request->category_id,
             'image' =>$request->image,
-            'type' =>$request->type = $request->type == 'Meal' ? 1: 0,
+            'type' =>$request->type = $request->type,
             'created_at' => Carbon::now()
         ]);
 
@@ -65,6 +79,9 @@ class FoodController extends Controller
         FoodTag::insert($foodTags);
         DB::commit();
 
+        return response()->json([
+            'food' => $food
+        ], 200, );
 
     } catch (\Throwable $th) {
 
@@ -94,38 +111,44 @@ class FoodController extends Controller
     public function foodUpdate(Request $request){
 
         // logger($request);
-
         // tag is old value ----
         // tags is new value ====
 
-
-
+        // Validation
         $this->validation($request);
 
         try{
+
+        // Clear Old Tags
         $Del_food_tag =  FoodTag::where('food_id', $request->id)->delete();
+
+        // Assign New Tags in Array
         $tags = $request->tags;
         $foodTags =[];
 
+        // Find specific data item
         $food = Food::find($request->id);
 
-        $food->update([
-            'name' => $request->name,
-            'price' =>$request->price,
-            'status' => 1,
-            'description' =>$request->description,
-            'category_id' =>$request->category_id,
-            'image' =>$request->image,
-            'type' =>$request->type = $request->type == 'Meal' ? 1: 0,
-            'created_at' => Carbon::now()
-        ]);
+        // Data Collect
+        $data = $this->dataCollector($request);
+        // Update
+        $food->update($data);
 
+        // Re-Fetch record item
+        $re_food = Food::find($food->id);
+
+        // Adding Tags to Pivot table with Looping
         foreach ($tags as $tag){
             array_push($foodTags,['tag_id'=>$tag, 'food_id'=>$food->id, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now() ]);
         }
 
+        // pivot table Create
         FoodTag::insert($foodTags);
         DB::commit();
+        return response()->json([
+            'food' => $re_food
+        ], 200, );
+
 
         }catch(\Throwable $th){
 
@@ -134,13 +157,19 @@ class FoodController extends Controller
 
         }
 
-
-
-
     }
 
+        // ===========================================
+        // foodDelete
+        // ===========================================
+        public function foodDelete($id){
+        $food = Food::find($id);
+        $food->delete();
 
-
+            return response()->json([
+                'food' => $food
+            ], 200);
+        }
 
 
     // ===================================
@@ -154,6 +183,7 @@ class FoodController extends Controller
         'price' => 'required|numeric|min:1',
         'type' => 'required|',
         'description' => 'required',
+        'excerpt' => 'required|min:20',
         'category_id' => 'required',
         'image' => 'required|url',
         'tags' => 'required',
@@ -163,6 +193,23 @@ class FoodController extends Controller
 
     }
 
+    // ===================================
+    // Data Collecting For Update
+    // ===================================
+
+    private function dataCollector(Request $request){
+        return [
+            'name' => $request->name,
+            'price' =>$request->price,
+            'status' => 1,
+            'description' =>$request->description,
+            'excerpt' => $request->excerpt,
+            'category_id' =>$request->category_id,
+            'image' =>$request->image,
+            'type' =>$request->type = $request->type,
+            'created_at' => Carbon::now()
+        ];
+    }
 
 
 }

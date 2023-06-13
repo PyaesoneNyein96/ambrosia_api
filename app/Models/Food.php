@@ -14,6 +14,7 @@ class Food extends Model
         'name',
         'price',
         'description',
+        'excerpt',
         'status',
         'category_id',
         'tag_id',
@@ -22,13 +23,14 @@ class Food extends Model
         'created_at'
     ];
 
+    public function User(){
+        return $this->belongsTo(User::class);
+    }
+
     public function Category(){
         return $this->belongsTo(Category::class);
     }
 
-    public function User(){
-        return $this->belongsTo(User::class);
-    }
 
     public function tag(){
         return $this->belongsToMany(Tag::class,'food_tags', 'food_id', 'tag_id');

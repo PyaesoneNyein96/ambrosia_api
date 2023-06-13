@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Tag;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -18,20 +21,29 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
+
+    public function Tag(){
+        // return $this->belongTo(Tag::class);
+        return $this->belongsTo(Tag::class,'preferred_cuisine');
+    }
+
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
+        'birthday',
         'address',
         'gender',
         'role',
         'image',
+        'restrictions',
+        'allergies',
+        'preferred_cuisine',
+        'membership',
+        // 'avatar'
     ];
 
     /**
@@ -44,6 +56,15 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+
+
+        //customize hide this ... :X
+        'current_team_id',
+        'profile_photo_path',
+        'profile_photo_url',
+        'email_verified_at',
+        'two_factor_confirmed_at',
+        'email_verified_at'
     ];
 
     /**
