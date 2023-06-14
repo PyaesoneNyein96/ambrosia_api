@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Carbon\Carbon;
+use App\Models\Tag;
 use App\Models\Food;
 use App\Models\FoodTag;
 use Illuminate\Http\Request;
@@ -116,7 +117,7 @@ class FoodController extends Controller
 
         // Validation
         $this->validation($request);
-
+        DB::beginTransaction();
         try{
 
         // Clear Old Tags
@@ -162,6 +163,7 @@ class FoodController extends Controller
         // ===========================================
         // foodDelete
         // ===========================================
+
         public function foodDelete($id){
         $food = Food::find($id);
         $food->delete();
@@ -170,6 +172,25 @@ class FoodController extends Controller
                 'food' => $food
             ], 200);
         }
+
+
+
+        // ===========================================
+        // Special Menu for User
+        // ===========================================
+
+        public function specialMenu(Request $request){
+            logger($request);
+            $result = Tag::with('food')->where('name','Special')->get();
+            return $result[0]->food;
+        }
+
+
+
+
+
+
+
 
 
     // ===================================

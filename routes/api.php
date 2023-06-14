@@ -27,6 +27,7 @@ Route::post('user/autoLogin',[AuthController::class,'autoLogin']);
 //  Customers
 Route::get('user/menu/getSpecific/{id}',[FoodController::class,'getSpecific']);
 Route::post('user/profile/update',[UserController::class,'updateProfile']);
+Route::get('user/special/menu',[FoodController::class,'specialMenu']);
 
 // FOOD
 Route::post('food/create',[FoodController::class,'foodCreate']);
@@ -54,7 +55,7 @@ Route::post('tag/edit', [TagController::class,'edit']);
 Route::post('tag/delete/{id}', [TagController::class,'delete']);
 
 
-// User Admin
+// User manage Admin
 Route::get('user/list',[UserController::class,'list']);
 Route::post('user/update',[UserController::class,'update']);
 Route::post('user/delete/{id}',[UserController::class,'delete']);
