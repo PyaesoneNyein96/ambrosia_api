@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\SearchController;
+use App\Http\Controllers\API\PackageController;
 use App\Http\Controllers\API\CategoryController;
 
 
@@ -60,6 +61,11 @@ Route::get('user/list',[UserController::class,'list']);
 Route::post('user/update',[UserController::class,'update']);
 Route::post('user/delete/{id}',[UserController::class,'delete']);
 Route::post('user/role/{id}',[UserController::class,'getUserByRole']);
+
+
+// Package
+
+Route::post('package/add',[PackageController::class,'packageAdd']);
 
 
 // ->middleware('auth:sanctum')

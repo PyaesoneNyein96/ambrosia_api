@@ -16,32 +16,45 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(20)->create();
+                // \App\Models\User::factory()->create([
+                //     'name' => 'Test User',
+                //     'email' => 'test@example.com',
+                // ]);
 
-        // User::create([
-        //     'name' => null,
-        //     'email' => 'psn@gmail.com',
-        //     'password' =>Hash::make('admin123'),
-        //     'gender' => ' ',
-        //     'role' => true,
-        //     'phone' => '123',
-        //     'address' => 'yangon',
-        //     'restrictions'=> 0,
-        //     'allergies'=> 0,
-        //     'preferred_cuisine'=> null,
-        //     'membership'=> 1,
 
-        //     'userToken' => null,
-        //     'email_verified_at' => now(),
-        // ]);
+        User::factory(10)->create();
+
+        User::create([
+            'name' => null,
+            'email' => 'psn@gmail.com',
+            'password' =>Hash::make('admin123'),
+            'gender' => ' ',
+            'role' => true,
+            'phone' => '123',
+            'address' => 'yangon',
+            'restrictions'=> 0,
+            'allergies'=> 0,
+            'preferred_cuisine'=> null,
+            'membership'=> 1,
+
+            'userToken' => null,
+            'email_verified_at' => now(),
+        ]);
 
         Category::factory()->count(5)->create();
 
-        Tag::factory()->count(5)->create();
+        Tag::factory()->count(2)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Tag::create([
+            'name' => 'Special'
+        ]);
+        Tag::create([
+            'name' => 'Economic'
+        ]);
+        Tag::create([
+            'name' => 'Popular'
+        ]);
+
+
     }
 }

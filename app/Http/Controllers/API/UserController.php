@@ -123,7 +123,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'gender' => $request->gender,
+            'gender' => $request->gender == 'null' ? Null: $request->gender,
             'birthday' => $request->birthday == 'null' ? Null: $request->birthday,
             'role' => $request->role,
             'restrictions' => $request->restrictions == true? 1: 0 ,
