@@ -67,6 +67,7 @@ Route::post('user/role/{id}',[UserController::class,'getUserByRole']);
 Route::post('package/add',[PackageController::class,'packageAdd']);
 Route::get('package/list',[PackageController::class,'packageList']);
 Route::post('package/update',[PackageController::class,'packageUpdate']);
+Route::post('package/delete/{id}',[PackageController::class,'packageDelete']);
 
 
 // ->middleware('auth:sanctum')

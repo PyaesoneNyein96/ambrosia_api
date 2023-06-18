@@ -111,6 +111,16 @@ class PackageController extends Controller
 
     }
 
+     // Package (Delete) with food =========================================
+
+     public function packageDelete($id){
+
+        return $package = Package::find($id)->delete();
+
+     }
+
+
+
 
 
 
