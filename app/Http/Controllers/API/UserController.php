@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function updateProfile(Request $request){
 
-        logger($request);
+        // logger($request);
         $this->validation($request);
 
         $user = User::with('tag')->where('id', $request->id)->first();
@@ -66,7 +66,7 @@ class UserController extends Controller
 
 
     public function delete($id){
-        logger($id);
+        // logger($id);
         $user = User::find($id);
         $user->delete();
 

@@ -51,7 +51,7 @@ class FoodController extends Controller
 
     public function foodCreate(Request $request){
 
-        Log::info($request);
+        // Log::info($request);
         $tags = $request->tags;
         $foodTags = [];
 

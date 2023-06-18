@@ -64,8 +64,9 @@ Route::post('user/role/{id}',[UserController::class,'getUserByRole']);
 
 
 // Package
-
 Route::post('package/add',[PackageController::class,'packageAdd']);
+Route::get('package/list',[PackageController::class,'packageList']);
+Route::post('package/update',[PackageController::class,'packageUpdate']);
 
 
 // ->middleware('auth:sanctum')

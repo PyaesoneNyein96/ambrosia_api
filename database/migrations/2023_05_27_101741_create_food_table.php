@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('food', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
+            // $table->integer('price');
+            $table->decimal('price',8,2);
             $table->text('description');
             $table->longText('excerpt');
-            $table->integer('status')->default(1); // does it or not
+            $table->integer('status')->default(1);
             // $table->integer('category_id');
             // $table->unsignedBigInteger('user_id')->nullable();
             // $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');

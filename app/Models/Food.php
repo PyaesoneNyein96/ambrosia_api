@@ -35,4 +35,8 @@ class Food extends Model
     public function tag(){
         return $this->belongsToMany(Tag::class,'food_tags', 'food_id', 'tag_id');
     }
+
+    public function package(){
+        return $this->belongsToMany(Package::class,'package_food','package_id','food_id');
+    }
 }

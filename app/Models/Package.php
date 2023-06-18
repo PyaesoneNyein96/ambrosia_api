@@ -9,5 +9,15 @@ class Package extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','total'];
+    protected $fillable = [
+        'name',
+        'sub_total',
+        'net_total',
+        'percentage'
+    ];
+
+    public function food(){
+        return $this->belongsToMany(Food::class,'package_food','package_id','food_id');
+    }
+
 }

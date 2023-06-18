@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Tag;
+use App\Models\Food;
 use App\Models\User;
+use App\Models\FoodTag;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,11 +26,15 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
+        Food::factory(10)->create();
+
+
+
         User::create([
             'name' => null,
             'email' => 'psn@gmail.com',
             'password' =>Hash::make('admin123'),
-            'gender' => ' ',
+            'gender' => null,
             'role' => true,
             'phone' => '123',
             'address' => 'yangon',
@@ -36,7 +42,6 @@ class DatabaseSeeder extends Seeder
             'allergies'=> 0,
             'preferred_cuisine'=> null,
             'membership'=> 1,
-
             'userToken' => null,
             'email_verified_at' => now(),
         ]);

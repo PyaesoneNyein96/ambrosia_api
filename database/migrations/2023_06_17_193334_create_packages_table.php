@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('total');
+            $table->decimal('sub_total',8,2);
+            $table->decimal('net_total',8,2);
+            $table->integer('percentage');
             $table->timestamps();
         });
     }
