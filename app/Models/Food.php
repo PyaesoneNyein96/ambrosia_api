@@ -39,4 +39,6 @@ class Food extends Model
     public function package(){
         return $this->belongsToMany(Package::class,'package_food','package_id','food_id');
     }
+
+
 }

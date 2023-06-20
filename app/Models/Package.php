@@ -20,4 +20,5 @@ class Package extends Model
         return $this->belongsToMany(Food::class,'package_food','package_id','food_id');
     }
 
+
 }
