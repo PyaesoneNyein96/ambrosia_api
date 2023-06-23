@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,18 +10,15 @@ use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
-    //
-
+    // Add and Create Cart by User
     public function add_Food_Package(Request $request){
-        // logger($request->type['package_id']);
+
 
         DB::beginTransaction();
         try {
             $data = $this->DataCollect($request);
             $cart = Cart::create($data);
-            // logger($data);
 
-            // logger($cart);
             DB::commit();
             return $cart ;
         } catch (\Throwable $th) {
@@ -33,8 +31,8 @@ class CartController extends Controller
     }
 
 
+    // Cart List By (Count)
     public function user_cart_List($id){
-
 
         $cartList = Cart::select('food_id','package_id' , DB::raw('COUNT(*) as count'))
         ->with(['food','package.food'])
@@ -45,6 +43,39 @@ class CartController extends Controller
         return $cartList;
 
     }
+
+// Cart remove
+    public function cart_remove(Request $request){
+
+        if(isset($request->food_id)){
+            $food = Cart::where('food_id', $request->food_id)->delete();
+        }else if(isset($request->package_id))
+        {
+            $food = Cart::where('package_id', $request->package_id)->delete();
+
+        }
+
+    }
+
+
+
+
+
+
+    // public function cart_modify_add(Request $request){
+
+    //     if($request->package_id){
+    //         $cartItem = Cart::where('package_id', $request->package_id)->first();
+    //         $addItem = $cartItem->replicate();
+    //         $addItem->created_at = Carbon::now();
+    //         $addItem->save();
+
+    //     }else if($request->food_id){
+    //         logger('f');
+
+    //     }
+
+    // }
 
 
 
@@ -69,6 +100,8 @@ class CartController extends Controller
             ];
            }
         }
+
+
 
 }
 

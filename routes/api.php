@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\PackageController;
 use App\Http\Controllers\API\CategoryController;
@@ -75,6 +76,12 @@ Route::post('package/delete/{id}',[PackageController::class,'packageDelete']);
 
 Route::post('user/cart',[CartController::class,'add_Food_Package']);
 Route::post('user/cart/list/{id}',[CartController::class,'user_cart_List']);
+// Route::post('user/cart/modify_add',[CartController::class,'cart_modify_add']);
+Route::post('user/cart/remove',[CartController::class,'cart_remove']);
+
+//Cart to Order (CART => ORDER)
+Route::post('user/cart/order',[OrderController::class,'add_order']);
+Route::post('user/order/list/{id}',[OrderController::class,'user_order_list']);
 
 // ->middleware('auth:sanctum')
 ;
