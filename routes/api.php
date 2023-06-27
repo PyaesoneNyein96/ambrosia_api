@@ -43,6 +43,7 @@ Route::get('food/type/{id}',[FoodController::class,'getFoodByType']);
 // Search (Admin)
 Route::post('search/food',[SearchController::class,'searchFoodByAdmin']);
 Route::post('search/user',[SearchController::class,'searchUserByAdmin']);
+Route::post('search/order',[SearchController::class,'searchOrderByAdmin']);
 
 
 // Categories manage (Admin)

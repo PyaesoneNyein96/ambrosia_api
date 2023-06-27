@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Food;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -66,7 +67,41 @@ class SearchController extends Controller
             'result' => $result
         ], 200);
 
-
-
     }
+
+    public function searchOrderByAdmin(Request $request){
+
+
+        $pendingPattern = '/^pen(d(i(n(g)?)?)?)?$/';
+        $confirmPattern = '/^con(f(i(r(m)?)?)?)?$/';
+        $rejectPattern = '/^rej(e(c(t)?)?)?$/';
+
+        $key = $request->key;
+
+        if (preg_match($pendingPattern, $key)){
+            $key = 1;
+        }
+        else if(preg_match($confirmPattern, $key)){
+            $key = 2;
+        }
+        else if(preg_match($rejectPattern, $key)){
+            $key = 3;
+        }
+
+
+        $result = Order::with('user')
+        ->where('order_code', 'like', "%$key%")
+        ->orWhere('total','like',"%$key%")
+        ->orWhere('status','like',"%$key%")
+
+        ->orWhereHas('user',function($q) use($key){
+            $q->where('name','like', "%$key%")
+            ->orWhere('email','like', "%$key%");
+        })->get();
+
+        logger($result);
+        return $result;
+    }
+
+
 }
