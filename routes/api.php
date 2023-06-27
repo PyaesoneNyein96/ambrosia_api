@@ -84,9 +84,14 @@ Route::post('user/cart/remove',[CartController::class,'cart_remove']);
 Route::post('user/cart/order',[OrderController::class,'add_order']);
 Route::post('user/order/list/{id}',[OrderController::class,'user_order_list']);
 
-Route::get('admin/order/list',[OrderController::class,'admin_order_list']);
-Route::post('admin/order/update', [OrderController::class,'admin_order_list_update']);
-Route::post('admin/order/detail/{code}', [OrderController::class,'admin_order_Detail']);
+
+// Order (admin)
+Route::prefix('admin')->group(function () {
+    Route::get('order/list',[OrderController::class,'admin_order_list']);
+    Route::post('order/update', [OrderController::class,'admin_order_list_update']);
+    Route::post('order/detail/{code}', [OrderController::class,'admin_order_Detail']);
+    Route::post('filter/order/{id}',[OrderController::class,'admin_order_Filter']);
+});
 
 // ->middleware('auth:sanctum')
 ;

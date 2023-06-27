@@ -152,7 +152,19 @@ class OrderController extends Controller
 
 
 
+    // ============ Admin Order get by Type ==============
 
+    public function admin_order_Filter($id){
+
+        if($id == 0){
+            return  Order::with('user')->get();
+        }else{
+          return Order::with('user')->where('status' ,$id)->get();
+        }
+
+
+
+    }
 
 
     // ======= Private ===========

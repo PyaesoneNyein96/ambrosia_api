@@ -47,7 +47,6 @@ class SearchController extends Controller
 
     public function searchUserByAdmin(Request $request){
 
-        logger($request);
         $key= $request->key;
 
         $result = User::with('tag')
@@ -99,7 +98,6 @@ class SearchController extends Controller
             ->orWhere('email','like', "%$key%");
         })->get();
 
-        logger($result);
         return $result;
     }
 
