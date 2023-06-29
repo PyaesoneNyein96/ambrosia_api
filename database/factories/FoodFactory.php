@@ -30,7 +30,9 @@ class FoodFactory extends Factory
             'description' => $this->faker->sentence(),
             'excerpt' => $this->faker->paragraph(2),
             'status' => 1,
-            'category_id' => Category::factory()->create()->id,
+            // 'category_id' => Category::factory()->create()->id,
+            'category_id' => rand(1,5),
+
             'type' => 1,
             'image' =>  "https://picsum.photos/800/500?".$rand,
 

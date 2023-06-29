@@ -30,8 +30,8 @@ class OrderController extends Controller
             array_push($orderOperation, [
                 'order_code' => $item['order_code'],
                 'user_id' => $item['user_id'],
-                'item_id' => $item['item_id'],
-                'type' => $item['type'],
+                'items_id' => $item['item_id'],
+                'items_type' => $item['type'],
                 'quantity' => $item['quantity'],
                 'total' => $item['total'],
                 'created_at' => Carbon::now(),
@@ -43,14 +43,15 @@ class OrderController extends Controller
 
        $percentage = $this->discountMath($orderOperation[0]['user_id']);
 
-       $order_total = $order_total - ($order_total*$percentage);
+       $total = $order_total - ($order_total*$percentage);
 
         OrderOperation::insert($orderOperation);
 
         $order = Order::create([
             'user_id' => $orderOperation[0]['user_id'],
             'order_code' => $orderOperation[0]['order_code'],
-            'total' => $order_total,
+            'total' => $total,
+            'sub_total' => $order_total,
             'status' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -107,49 +108,94 @@ class OrderController extends Controller
     public function admin_order_Detail($code){
 
 
-        // $orderOperation = OrderOperation::with('user')->where('order_code',$code)->get();
-        $orderOperation = OrderOperation::with(['food','packages'])->where('order_code',$code)->get();
-        $mainOrder = Order::with('user')->where('order_code',$code)->get();
 
-        logger($mainOrder->toArray());
+        // $orderOperation = OrderOperation::with(['food','packages'])->where('order_code',$code)->get();
+
+        $orderOperation = orderOperation::with('items')->where('order_code',$code)->get();
+        $mainOrder = Order::with('user.tag')->where('order_code',$code)->first();
 
 
+        $coll = [];
 
-        $all =[];
-
-        foreach ($orderOperation as $key) {
-            if($key->type == 1) {
-                $food = Food::where('id', $key['item_id'])->get();
-                foreach($food as $f){
-                array_push($all,
-                ['food_name' => $f->name,
-                'food_price' => $f->price,
-                'food_img' => $f->image,
-                'qty' => $key->quantity,
-                'total'=>$key->total,
+        foreach ($orderOperation as $order) {
+            array_push($coll,[
+                'type' => $order->items_type,
+                'quantity' => $order->quantity,
+                'this_total' => $order->total,
+                'name' => $order->items->name,
+                'package_price' => $order->items->net_total,
+                'food_price' => $order->items->price,
+                'date' => $order->created_at,
                 ]);
-
-                }
-            }else if($key->type ==2){
-                $pack = Package::where('id', $key['item_id'])->get();
-                foreach($pack as $p){
-                    array_push($all,
-                    [
-                     'pack_name' => $p->name,
-                     'pack_sub' => $p->sub_total,
-                     'pack_net' => $p->net_total,
-                     'qty' => $key->quantity,
-                     'total'=>$key->total,
-                    ]);
-                }
-            }
         }
+
+        // logger($coll);
+
+        $order_user = [
+            'name' =>$mainOrder->user->name,
+            'email' =>$mainOrder->user->email,
+            'phone' =>$mainOrder->user->phone,
+            'address' =>$mainOrder->user->address,
+            'birthday' =>Carbon::parse($mainOrder->user->birthday),
+            'restrictions'=> $mainOrder->user->restrictions,
+            'allergies'=> $mainOrder->user->allergies,
+            'preferred_cuisine' =>$mainOrder->user->tag ? $mainOrder->user->tag->name : null,
+            'membership' => $mainOrder->membership,
+
+            'order_id' => $mainOrder->id,
+            'order_sub_total' => $mainOrder->sub_total,
+            'order_total' => $mainOrder->total,
+            'order_status' => $mainOrder->status,
+            'order_code' => $mainOrder->order_code,
+            'date' => $mainOrder->created_at,
+        ];
+
+        // logger($order_user->birthday);
+        logger($order_user['date']);
+        logger($order_user['birthday']);
+
+        return [ 'orderUser' => $order_user,'all_items'=> $coll];
+
+
+
+        // $all =[];
+
+        // foreach ($orderOperation as $key) {
+        //     if($key->items_type == 'App\models\Food') {
+        //         $food = Food::where('id', $key['items_id'])->get();
+        //         foreach($food as $f){
+        //         array_push($all,
+        //         ['food_name' => $f->name,
+        //         'food_price' => $f->price,
+        //         'food_img' => $f->image,
+        //         'qty' => $key->quantity,
+        //         'total'=>$key->total,
+        //         ]);
+
+        //         }
+        //     }else if($key->items_type == 'App\models\Package'){
+        //         $pack = Package::where('id', $key['items_id'])->get();
+        //         foreach($pack as $p){
+        //             array_push($all,
+        //             [
+        //              'pack_name' => $p->name,
+        //              'pack_sub' => $p->sub_total,
+        //              'pack_net' => $p->net_total,
+        //              'qty' => $key->quantity,
+        //              'total'=>$key->total,
+        //             ]);
+        //         }
+        //     }
+        // }
+
+        // logger($all);
+
         // $final = array_merge($all,$mainOrder->toArray());  // Important to->Array()
 
-        return response()->json([
-            'items' => $all,
-            'order_user' => $mainOrder
-        ], 200);
+        // return response()->json([
+        //     'items' => $coll,
+        //     'order_user' => $mainOrder
+        // ], 200);
 
     }
 
@@ -192,3 +238,53 @@ class OrderController extends Controller
 
 
 }
+
+
+
+   // Admin Order Detail ============================
+
+//    public function admin_order_Detail($code){
+
+//     $orderOperation = OrderOperation::with(['food','packages'])->where('order_code',$code)->get();
+//     $mainOrder = Order::with('user')->where('order_code',$code)->first();
+
+//     $all =[];
+
+//     foreach ($orderOperation as $key) {
+//         if($key->items_type == 'App\models\Food') {
+//             $food = Food::where('id', $key['items_id'])->get();
+//             foreach($food as $f){
+//             array_push($all,
+//             ['food_name' => $f->name,
+//             'food_price' => $f->price,
+//             'food_img' => $f->image,
+//             'qty' => $key->quantity,
+//             'total'=>$key->total,
+//             ]);
+
+//             }
+//         }else if($key->items_type == 'App\models\Package'){
+//             $pack = Package::where('id', $key['items_id'])->get();
+//             foreach($pack as $p){
+//                 array_push($all,
+//                 [
+//                  'pack_name' => $p->name,
+//                  'pack_sub' => $p->sub_total,
+//                  'pack_net' => $p->net_total,
+//                  'qty' => $key->quantity,
+//                  'total'=>$key->total,
+//                 ]);
+//             }
+//         }
+//     }
+
+//     logger($all);
+
+//     $final = array_merge($all,$mainOrder->toArray());  // Important to->Array()
+
+//     return response()->json([
+//         'items' => $all,
+//         'order_user' => $mainOrder
+//     ], 200);
+
+// }

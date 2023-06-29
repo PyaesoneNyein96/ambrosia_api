@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('order_code');
+            $table->decimal('sub_total',8,2);
             $table->decimal('total',8,2);
             $table->integer('status')->default(1);
             $table->timestamps();

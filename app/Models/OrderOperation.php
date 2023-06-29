@@ -13,8 +13,8 @@ class OrderOperation extends Model
     protected $fillable = [
             'order_code',
             'user_id',
-            'item_id',
-            'type',
+            'items_id',
+            'items_type',
             'quantity',
             'total'
     ];
@@ -28,14 +28,18 @@ class OrderOperation extends Model
     }
 
 
-
-    public function food(){
-            return $this->belongsTo(Food::class,'item_id');
+    public function items(){
+        return $this->morphTo();
     }
 
-    public function packages(){
-            return $this->belongsTo(Package::class,'item_id');
-    }
+
+    // public function food(){
+    //         return $this->belongsTo(Food::class,'item_id');
+    // }
+
+    // public function packages(){
+    //         return $this->belongsTo(Package::class,'item_id');
+    // }
 
 
 

@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
                 // ]);
 
 
-        User::factory(10)->create();
+        User::factory(9)->create();
 
-        Food::factory(10)->create();
+
 
 
 
@@ -48,6 +48,9 @@ class DatabaseSeeder extends Seeder
 
         Category::factory()->count(5)->create();
 
+        Food::factory(10)->create();
+
+
         Tag::factory()->count(2)->create();
 
         Tag::create([
@@ -59,6 +62,9 @@ class DatabaseSeeder extends Seeder
         Tag::create([
             'name' => 'Popular'
         ]);
+
+
+
 
 
     }

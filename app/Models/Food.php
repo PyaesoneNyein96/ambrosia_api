@@ -37,5 +37,9 @@ class Food extends Model
     }
 
 
+    public function orderOperation(){
+        return $this->morphMany(orderOperation::class,'items');
+    }
+
 
 }
