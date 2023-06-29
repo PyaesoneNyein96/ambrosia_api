@@ -20,10 +20,6 @@ class Package extends Model
         return $this->belongsToMany(Food::class,'package_food','package_id','food_id');
     }
 
-    // public function orderOperations(){
-    //     return $this->belongsTo(OrderOperations::class,'item_id','id')->where('type',2);
-    // }
-
 
 
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\PackageController;
 use App\Http\Controllers\API\CategoryController;
@@ -31,6 +32,32 @@ Route::post('user/autoLogin',[AuthController::class,'autoLogin']);
 Route::get('user/menu/getSpecific/{id}',[FoodController::class,'getSpecific']);
 Route::post('user/profile/update',[UserController::class,'updateProfile']);
 Route::get('user/special/menu',[FoodController::class,'specialMenu']);
+
+
+
+
+
+
+Route::prefix('user')->group(function () {
+
+    // Cart (User)
+    Route::post('cart',[CartController::class,'add_Food_Package']);
+    Route::post('cart/list/{id}',[CartController::class,'user_cart_List']);
+    Route::post('cart/remove',[CartController::class,'cart_remove']);
+    // Route::post('user/cart/modify_add',[CartController::class,'cart_modify_add']);
+
+    //Cart to Order (CART => ORDER)
+    Route::post('cart/order',[OrderController::class,'add_order']);
+    Route::post('order/list/{id}',[OrderController::class,'user_order_list']);
+
+
+    Route::post('review/submit',[ReviewController::class,'submit_review']);
+
+});
+
+
+
+
 
 // Food manage (Admin)
 Route::post('food/create',[FoodController::class,'foodCreate']);
@@ -73,16 +100,6 @@ Route::post('package/update',[PackageController::class,'packageUpdate']);
 Route::post('package/delete/{id}',[PackageController::class,'packageDelete']);
 
 
-// Cart (User)
-
-Route::post('user/cart',[CartController::class,'add_Food_Package']);
-Route::post('user/cart/list/{id}',[CartController::class,'user_cart_List']);
-// Route::post('user/cart/modify_add',[CartController::class,'cart_modify_add']);
-Route::post('user/cart/remove',[CartController::class,'cart_remove']);
-
-//Cart to Order (CART => ORDER)
-Route::post('user/cart/order',[OrderController::class,'add_order']);
-Route::post('user/order/list/{id}',[OrderController::class,'user_order_list']);
 
 
 // Order (admin)

@@ -107,10 +107,14 @@ class OrderController extends Controller
     public function admin_order_Detail($code){
 
 
-        $orderOperation = OrderOperation::with('user')->where('order_code',$code)->get();
+        // $orderOperation = OrderOperation::with('user')->where('order_code',$code)->get();
+        $orderOperation = OrderOperation::with(['food','packages'])->where('order_code',$code)->get();
         $mainOrder = Order::with('user')->where('order_code',$code)->get();
-        // $order = $orderOperation[0]->order;
-        // logger($orderOperation->toArray());
+
+        logger($mainOrder->toArray());
+
+
+
         $all =[];
 
         foreach ($orderOperation as $key) {
@@ -142,7 +146,6 @@ class OrderController extends Controller
         }
         // $final = array_merge($all,$mainOrder->toArray());  // Important to->Array()
 
-        // logger($all);
         return response()->json([
             'items' => $all,
             'order_user' => $mainOrder
@@ -185,6 +188,7 @@ class OrderController extends Controller
 
 
     }
+
 
 
 }

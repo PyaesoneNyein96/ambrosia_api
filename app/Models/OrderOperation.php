@@ -28,26 +28,13 @@ class OrderOperation extends Model
     }
 
 
-    // public function food(){
-    //     return $this->hasMany(Food::class,'id','item_id',['type',1]);
-    // }
-
-    // public function packages(){
-    //     return $this->hasMany(Package::class,'id','item_id',['type',2]);
-    // }
-
 
     public function food(){
-
-        // if($this->type == 1){
-            return $this->belongsTo(Food::class,'item_id','id');
-        // }
+            return $this->belongsTo(Food::class,'item_id');
     }
 
     public function packages(){
-        // if($this->type == 2){
-            return $this->belongsTo(Package::class,'item_id','id');
-        // }
+            return $this->belongsTo(Package::class,'item_id');
     }
 
 

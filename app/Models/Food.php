@@ -23,14 +23,10 @@ class Food extends Model
         'created_at'
     ];
 
-    public function User(){
-        return $this->belongsTo(User::class);
-    }
 
     public function Category(){
         return $this->belongsTo(Category::class);
     }
-
 
     public function tag(){
         return $this->belongsToMany(Tag::class,'food_tags', 'food_id', 'tag_id');
@@ -40,10 +36,6 @@ class Food extends Model
         return $this->belongsToMany(Package::class,'package_food','package_id','food_id');
     }
 
-    //
 
-    // public function orderOperations(){
-    //     return $this->belongsTo(OrderOperations::class,'item_id','id')->where('type',1);
-    // }
 
 }
