@@ -2,14 +2,15 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Tag;
 use App\Models\Food;
 use App\Models\User;
+use App\Models\Review;
 use App\Models\FoodTag;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,11 +25,13 @@ class DatabaseSeeder extends Seeder
                 // ]);
 
 
+
+
+
+
+
+
         User::factory(9)->create();
-
-
-
-
 
         User::create([
             'name' => null,
@@ -64,6 +67,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
+        Review::factory(5)->create();
 
 
 

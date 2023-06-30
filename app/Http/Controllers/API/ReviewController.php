@@ -11,7 +11,7 @@ class ReviewController extends Controller
     //
 
     public function submit_review(Request $request){
-        logger($request);
+
 
        $review = Review::create([
             'user_id' => $request->user_id,
@@ -23,4 +23,17 @@ class ReviewController extends Controller
 
         return Review::all();
     }
+
+
+    public function review_list(Request $request){
+
+        return Review::with('user')->orderBy('created_at','desc')->get();
+
+    }
+
+
+
+
+
+
 }

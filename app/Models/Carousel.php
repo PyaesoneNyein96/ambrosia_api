@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Carousel extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'subject',
-        'message',
-        'rating',
+        'title',
+        'image',
+        'description',
+        'color',
+        'position',
     ];
-
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
 }

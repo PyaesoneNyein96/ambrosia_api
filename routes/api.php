@@ -11,6 +11,7 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\PackageController;
+use App\Http\Controllers\API\CarouselController;
 use App\Http\Controllers\API\CategoryController;
 
 
@@ -52,6 +53,7 @@ Route::prefix('user')->group(function () {
 
 
     Route::post('review/submit',[ReviewController::class,'submit_review']);
+    Route::get('review/list', [ReviewController::class, 'review_list']);
 
 });
 
@@ -79,6 +81,7 @@ Route::post('category/create',[CategoryController::class,'create']);
 Route::post('category/update',[CategoryController::class,'update']);
 Route::post('category/delete/{id}',[CategoryController::class,'delete']);
 
+
 // Tags manage (Admin)
 Route::get('user/tagsList',[TagController::class,'list']);
 Route::post('tag/add', [TagController::class,'create']);
@@ -102,12 +105,21 @@ Route::post('package/delete/{id}',[PackageController::class,'packageDelete']);
 
 
 
-// Order (admin)
 Route::prefix('admin')->group(function () {
+
+    // Order (admin)
+
     Route::get('order/list',[OrderController::class,'admin_order_list']);
     Route::post('order/update', [OrderController::class,'admin_order_list_update']);
     Route::post('order/detail/{code}', [OrderController::class,'admin_order_Detail']);
     Route::post('filter/order/{id}',[OrderController::class,'admin_order_Filter']);
+
+
+    // Carousel (admin)
+
+    Route::get('carousel/list', [CarouselController::class,'getCarousels']);
+    Route::post('carousel/add', [CarouselController::class,'addCarousel']);
+    Route::post('carousel/delete/{id}', [CarouselController::class,'deleteCarousel']);
 });
 
 // ->middleware('auth:sanctum')

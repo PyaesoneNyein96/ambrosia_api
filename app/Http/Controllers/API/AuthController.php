@@ -95,7 +95,7 @@ class AuthController extends Controller
     // Data COllect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     private function RegCollectData($req){
         return [
-            'name'=>null,
+            'name'=>$req->name,
             'email'=>$req->email,
             'password'=>Hash::make($req->password),
             'userToken'=> null

@@ -107,10 +107,6 @@ class OrderController extends Controller
 
     public function admin_order_Detail($code){
 
-
-
-        // $orderOperation = OrderOperation::with(['food','packages'])->where('order_code',$code)->get();
-
         $orderOperation = orderOperation::with('items')->where('order_code',$code)->get();
         $mainOrder = Order::with('user.tag')->where('order_code',$code)->first();
 
@@ -129,7 +125,6 @@ class OrderController extends Controller
                 ]);
         }
 
-        // logger($coll);
 
         $order_user = [
             'name' =>$mainOrder->user->name,
@@ -156,46 +151,6 @@ class OrderController extends Controller
 
         return [ 'orderUser' => $order_user,'all_items'=> $coll];
 
-
-
-        // $all =[];
-
-        // foreach ($orderOperation as $key) {
-        //     if($key->items_type == 'App\models\Food') {
-        //         $food = Food::where('id', $key['items_id'])->get();
-        //         foreach($food as $f){
-        //         array_push($all,
-        //         ['food_name' => $f->name,
-        //         'food_price' => $f->price,
-        //         'food_img' => $f->image,
-        //         'qty' => $key->quantity,
-        //         'total'=>$key->total,
-        //         ]);
-
-        //         }
-        //     }else if($key->items_type == 'App\models\Package'){
-        //         $pack = Package::where('id', $key['items_id'])->get();
-        //         foreach($pack as $p){
-        //             array_push($all,
-        //             [
-        //              'pack_name' => $p->name,
-        //              'pack_sub' => $p->sub_total,
-        //              'pack_net' => $p->net_total,
-        //              'qty' => $key->quantity,
-        //              'total'=>$key->total,
-        //             ]);
-        //         }
-        //     }
-        // }
-
-        // logger($all);
-
-        // $final = array_merge($all,$mainOrder->toArray());  // Important to->Array()
-
-        // return response()->json([
-        //     'items' => $coll,
-        //     'order_user' => $mainOrder
-        // ], 200);
 
     }
 
