@@ -8,6 +8,7 @@ use App\Models\Food;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\BookingTable;
 use Illuminate\Http\Request;
 use App\Models\OrderOperation;
 use Illuminate\Support\Facades\DB;
@@ -17,16 +18,23 @@ class OrderController extends Controller
 {
     //
 
-    public function add_order(Request $request){
+    public function add_order(){
 
-        logger($request);
+        if(request()->cart){
+            $request = request()->cart;
+        }else{
+            $request = request()->toArray();
+        }
+
+
         DB::beginTransaction();
         try {
 
         $orderOperation =[];
         $order_total = 0;
 
-        foreach ($request->toArray() as $item) {
+        // foreach ($request->toArray() as $item) {
+        foreach ($request as $item) {
             array_push($orderOperation, [
                 'order_code' => $item['order_code'],
                 'user_id' => $item['user_id'],
@@ -71,11 +79,52 @@ class OrderController extends Controller
 
     }
 
+    //Book Table
 
+    public function book_table(Request $request){
+
+
+
+
+    $time = date($request->book['time']);
+
+    logger($time);
+
+        // $time = Carbon::now();
+        // $time = $request->book['time']->isoFormat('LTS');
+        // $time = $request->book['time']->isoFormat('g:i:s');
+
+
+        BookingTable::create([
+            'user_id' => $request->book['user_id'],
+            'order_code' => $request->book['order_code'],
+            'date' => $request->book['date'],
+            // 'time' => $request->book['time'],
+            'time' => $time,
+            'people' => $request->book['people'],
+            'message' => $request->book['message'],
+        ]);
+
+
+        $this->add_order($request);
+
+
+
+    }
+
+
+
+
+
+
+
+    // Order List
 
     public function user_order_list($id){
 
-        $userOrder = Order::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+        $userOrder = Order::with('bookingTable')->where('user_id',$id)->orderBy('created_at','desc')->get();
+
+
         if($userOrder){
             return $userOrder;
         }else{
@@ -108,7 +157,7 @@ class OrderController extends Controller
     public function admin_order_Detail($code){
 
         $orderOperation = orderOperation::with('items')->where('order_code',$code)->get();
-        $mainOrder = Order::with('user.tag')->where('order_code',$code)->first();
+        $mainOrder = Order::with(['user.tag','bookingTable'])->where('order_code',$code)->first();
 
 
         $coll = [];
@@ -145,11 +194,19 @@ class OrderController extends Controller
             'date' => $mainOrder->created_at,
         ];
 
-        // logger($order_user->birthday);
-        logger($order_user['date']);
-        logger($order_user['birthday']);
+        if(count($mainOrder->bookingTable) !== 0 ){
+            $bookingTable = $mainOrder->bookingTable[0];
+            $table_info = [
+                'people' => $bookingTable->people,
+                'date' => $bookingTable->date,
+                'time' => $bookingTable->time,
+                'message' => $bookingTable->message,
+            ];
+        }else{
+           $table_info = null;
+        }
 
-        return [ 'orderUser' => $order_user,'all_items'=> $coll];
+        return [ 'orderUser' => $order_user,'table_info'=> $table_info , 'all_items'=> $coll];
 
 
     }

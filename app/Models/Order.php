@@ -17,14 +17,20 @@ class Order extends Model
         'total'
     ];
 
-    public function orderOperations(){
-        return $this->hasMany(Order::class,'order_code','order_code');
-    }
 
 
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function orderOperations(){
+        return $this->hasMany(Order::class,'order_code','order_code');
+    }
+
+    public function bookingTable(){
+        return $this->hasMany(bookingTable::class,'order_code','order_code');
+    }
+
 
 
 }

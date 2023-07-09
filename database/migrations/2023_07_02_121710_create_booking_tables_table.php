@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carousels', function (Blueprint $table) {
+        Schema::create('booking_tables', function (Blueprint $table) {
             $table->id();
-            $table->string('image')->nullable();
-            $table->string('title_color')->nullable();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->string('position')->nullable();
-            $table->string('color')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('order_code')->nullable();
+            $table->time('time');
+            $table->date('date');
+            $table->text('message')->nullable();
+            $table->integer('people');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carousels');
+        Schema::dropIfExists('booking_tables');
     }
 };

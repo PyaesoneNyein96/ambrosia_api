@@ -22,9 +22,9 @@ class FoodController extends Controller
     public function getSpecific($id){
 
         if($id == 'All'){
-            $data = Food::with( ['tag','category'] )->get();
+            $data = Food::with( ['tag','category'] )->orderBy('created_at','desc')->get();
         }else{
-            $data = Food::with('tag')->where('category_id',$id)->get();
+            $data = Food::with('tag')->where('category_id',$id)->orderBy('created_at','desc')->get();
         }
 
         return response()->json($data, 200);
@@ -35,12 +35,12 @@ class FoodController extends Controller
     public function getFoodByType($type){
 
         if($type == 1){
-        return   $food = Food::with(['tag','category'])->where('type', 1)->get();
+        return   $food = Food::with(['tag','category'])->where('type', 1)->orderBy('created_at','desc')->get();
         }else if
         ($type == 0){
-            return $food = Food::with(['tag','category'])->where('type', 0)->get();
+            return $food = Food::with(['tag','category'])->where('type', 0)->orderBy('created_at','desc')->get();
         }else{
-            return $food = Food::with(['tag','category'])->get();
+            return $food = Food::with(['tag','category'])->orderBy('created_at','desc')->get();
         }
 
 

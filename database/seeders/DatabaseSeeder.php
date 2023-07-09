@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         User::factory(9)->create();
 
         User::create([
-            'name' => null,
+            'name' => 'pyae sone',
             'email' => 'psn@gmail.com',
             'password' =>Hash::make('admin123'),
             'gender' => null,

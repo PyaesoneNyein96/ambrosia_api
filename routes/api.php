@@ -51,6 +51,8 @@ Route::prefix('user')->group(function () {
     Route::post('cart/order',[OrderController::class,'add_order']);
     Route::post('order/list/{id}',[OrderController::class,'user_order_list']);
 
+    Route::post('book/table',[OrderController::class,'book_table']);
+
 
     Route::post('review/submit',[ReviewController::class,'submit_review']);
     Route::get('review/list', [ReviewController::class, 'review_list']);
@@ -120,6 +122,7 @@ Route::prefix('admin')->group(function () {
     Route::get('carousel/list', [CarouselController::class,'getCarousels']);
     Route::post('carousel/add', [CarouselController::class,'addCarousel']);
     Route::post('carousel/delete/{id}', [CarouselController::class,'deleteCarousel']);
+    Route::post('carousel/update', [CarouselController::class,'updateCarousel']);
 });
 
 // ->middleware('auth:sanctum')

@@ -11,6 +11,7 @@ class Carousel extends Model
 
     protected $fillable = [
         'title',
+        'title_color',
         'image',
         'description',
         'color',
