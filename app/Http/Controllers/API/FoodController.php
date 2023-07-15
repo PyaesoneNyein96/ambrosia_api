@@ -111,7 +111,6 @@ class FoodController extends Controller
 
     public function foodUpdate(Request $request){
 
-        // logger($request);
         // tag is old value ----
         // tags is new value ====
 
@@ -180,7 +179,6 @@ class FoodController extends Controller
         // ===========================================
 
         public function specialMenu(Request $request){
-            logger($request);
             $result = Tag::with('food')->where('name','Special')->get();
             return $result[0]->food;
         }

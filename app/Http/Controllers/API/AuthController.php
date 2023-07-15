@@ -19,7 +19,6 @@ class AuthController extends Controller
 
 
 
-        // logger($user->toArray());
         if($user){
             if(Hash::check($req->password, $user->password)){
                 $token = $this->TokenGenerator($user);
@@ -76,7 +75,7 @@ class AuthController extends Controller
 
     $user = User::where('userToken', $req->token)->first();
 
-    // logger($user->toJson());
+
 
     $token = $this->TokenGenerator($user);
     User::where('email', $req->email)->update(['userToken' => $token]);
@@ -90,6 +89,36 @@ class AuthController extends Controller
 
     }
 
+    public function passwordUpdate(Request $request){
+
+        $this->Password_Validation($request);
+
+        $db_pass = User::find($request->user_id)->password;
+
+        if($db_pass){
+
+            if(Hash::check($request->oldPassword , $db_pass )){
+                User::where('id', $request->user_id)->update(['password'=> Hash::make($request->newPassword) ]);
+                return 200;
+            }else{
+                //  old pass not match
+            return 401;
+            }
+
+        }else{
+            return 403;
+        }
+
+
+
+
+    }
+
+
+
+    // =======================================
+    // Private Functions
+    // =======================================
 
 
     // Data COllect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -109,11 +138,25 @@ class AuthController extends Controller
 
     // Validation XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-    private function validation($request){
 
-        Validator::make($request->all, [
+    private function Password_Validation($request){
 
-        ])->validate();
+        Validator::make($request->all(), [
+            'oldPassword' => 'required',
+            'newPassword' => 'required|min:6',
+            'confirmPassword' => 'required|min:6',
+            'confirmPassword' => 'required|same:newPassword',
+            'user_id' => 'required'
+        ], [
+            'oldPassword.required' => 'Current password is required',
+            'oldPassword.oldPassword' => 'Your old password is invalid !!!',
+
+            'newPassword.required' => 'Your new password is required',
+            'newPassword.confirmPassword' => 'New password and confirm password must be same',
+
+        ]
+
+        )->validate();
     }
 
 

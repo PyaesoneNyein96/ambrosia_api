@@ -24,7 +24,6 @@ class CategoryController extends Controller
 
     public function create(Request $request){
 
-        // logger($request);
         Validator::make($request->all(),
          ['name' => 'required|unique:categories,name,'.$request->id]
          )->validate();
@@ -38,7 +37,6 @@ class CategoryController extends Controller
 
 
     public function update(Request $request){
-        logger($request);
 
         validator::make($request->all(), ['name' => 'required|unique:categories,name,'.$request->id])->validate();
 

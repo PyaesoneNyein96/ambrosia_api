@@ -16,7 +16,6 @@ class UserController extends Controller
 
     public function updateProfile(Request $request){
 
-        // logger($request);
         $this->validation($request);
 
         $user = User::with('tag')->where('id', $request->id)->first();
@@ -54,19 +53,13 @@ class UserController extends Controller
 
     public function list(Request $request) {
 
-         return $userList = User::with('tag')->get();
-
-
-        //  return return response()->json([
-        //     'userInfo' => $user
-        //  ], 200, $headers);
-
+         return $userList = User::with('tag')->orderBy('role','desc')->get();
 
     }
 
 
     public function delete($id){
-        // logger($id);
+
         $user = User::find($id);
         $user->delete();
 
@@ -106,9 +99,6 @@ class UserController extends Controller
 
 
 
-
-
-
     private function validation ($request) {
         Validator::make($request->all(), [
             'name' => 'required',
@@ -123,24 +113,28 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'gender' => $request->gender == 'null' ? Null: $request->gender,
-            'birthday' => $request->birthday == 'null' ? Null: $request->birthday,
+            'gender' => $request->gender,
+            'birthday' => $request->birthday,
             'role' => $request->role,
             'restrictions' => $request->restrictions == true? 1: 0 ,
             'allergies' => $request->allergies == true? 1: 0 ,
-            'preferred_cuisine' => $request->preferred_cuisine == 'null' ? Null : $request->preferred_cuisine ,
+            'preferred_cuisine' => $request->preferred_cuisine,
             'membership' =>$request->membership,
 
-            // 'address' => $request->address == 'null' ? Null: $request->address,
-            // 'gender' => $request->gender == 'null' ? Null: $request->gender,
-            // 'birthday' => $request->birthday == 'null' ? Null: $request->birthday,
-            // 'role' => $request->role,
-            // 'restrictions' => $request->restrictions == true? 1: 0 ,
-            // 'allergies' => $request->allergies == true? 1: 0 ,
-            // 'preferred_cuisine' => $request->preferred_cuisine == 'null' ? Null : $request->preferred_cuisine,
-            // 'membership' =>$request->membership == 'null' ? Null : $request->membership,
             'updated_at' => Carbon::now(),
         ];
     }
 
 }
+
+// 'name' => $request->name,
+// 'email' => $request->email,
+// 'phone' => $request->phone,
+// 'address' => $request->address,
+// 'gender' => $request->gender == 'null' ? Null: $request->gender,
+// 'birthday' => $request->birthday == 'null' ? Null: $request->birthday,
+// 'role' => $request->role,
+// 'restrictions' => $request->restrictions == true? 1: 0 ,
+// 'allergies' => $request->allergies == true? 1: 0 ,
+// 'preferred_cuisine' => $request->preferred_cuisine == 'null' ? Null : $request->preferred_cuisine ,
+// 'membership' =>$request->membership,

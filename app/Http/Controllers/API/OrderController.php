@@ -88,18 +88,11 @@ class OrderController extends Controller
 
     $time = date($request->book['time']);
 
-    logger($time);
-
-        // $time = Carbon::now();
-        // $time = $request->book['time']->isoFormat('LTS');
-        // $time = $request->book['time']->isoFormat('g:i:s');
-
 
         BookingTable::create([
             'user_id' => $request->book['user_id'],
             'order_code' => $request->book['order_code'],
             'date' => $request->book['date'],
-            // 'time' => $request->book['time'],
             'time' => $time,
             'people' => $request->book['people'],
             'message' => $request->book['message'],

@@ -37,7 +37,6 @@ class CarouselController extends Controller
 
     //Delete
     public function deleteCarousel($id){
-        logger($id);
         Carousel::find($id)->delete();
         return 200;
 

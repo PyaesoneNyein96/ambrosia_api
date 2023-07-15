@@ -36,7 +36,6 @@ class TagController extends Controller
 
     //Delete
     public function delete($id){
-        // logger($id);
 
         $tag = Tag::find($id);
         $tag->delete();
@@ -56,7 +55,6 @@ class TagController extends Controller
         $tag = Tag::find($request->id)->update(['name' => $request->name]);
         $tagUpdated =Tag::find($request->id);
 
-        logger($tagUpdated);
 
         return response()->json([
             'tag' => $tagUpdated

@@ -20,55 +20,52 @@ use App\Http\Controllers\API\CategoryController;
 //     return $request->user();
 // });
 
-Route::post('user/login', [AuthController::class,'login']);
-Route::post('user/register',[AuthController::class,'register']);
-Route::post('user/autoLogin',[AuthController::class,'autoLogin']);
 
 
 
 
-
-
-//  Customers
+//  Customers *
 Route::get('user/menu/getSpecific/{id}',[FoodController::class,'getSpecific']);
 Route::post('user/profile/update',[UserController::class,'updateProfile']);
 Route::get('user/special/menu',[FoodController::class,'specialMenu']);
 
 
 
-
-
-
 Route::prefix('user')->group(function () {
+
+    // Auth
+    Route::post('login', [AuthController::class,'login']);
+    Route::post('register',[AuthController::class,'register']);
+    Route::post('autoLogin',[AuthController::class,'autoLogin']);
 
     // Cart (User)
     Route::post('cart',[CartController::class,'add_Food_Package']);
     Route::post('cart/list/{id}',[CartController::class,'user_cart_List']);
     Route::post('cart/remove',[CartController::class,'cart_remove']);
-    // Route::post('user/cart/modify_add',[CartController::class,'cart_modify_add']);
 
     //Cart to Order (CART => ORDER)
     Route::post('cart/order',[OrderController::class,'add_order']);
     Route::post('order/list/{id}',[OrderController::class,'user_order_list']);
 
+    // Book Table with Cart
     Route::post('book/table',[OrderController::class,'book_table']);
 
-
+    // Review
     Route::post('review/submit',[ReviewController::class,'submit_review']);
     Route::get('review/list', [ReviewController::class, 'review_list']);
+
+
+    // password change
+    Route::post('password/change',[AuthController::class,'passwordUpdate']);
 
 });
 
 
 
-
-
-// Food manage (Admin)
-Route::post('food/create',[FoodController::class,'foodCreate']);
-Route::get('food/edit/{id}',[FoodController::class,'foodBySpecific']); //For Edit Page
-Route::post('food/update',[FoodController::class,'foodUpdate']);
-Route::post('food/delete/{id}',[FoodController::class,'foodDelete']);
+// both (Admin & User)
 Route::get('food/type/{id}',[FoodController::class,'getFoodByType']);
+
+
 
 
 // Search (Admin)
@@ -109,8 +106,13 @@ Route::post('package/delete/{id}',[PackageController::class,'packageDelete']);
 
 Route::prefix('admin')->group(function () {
 
-    // Order (admin)
+    // Food manage (Admin)
+    Route::post('food/create',[FoodController::class,'foodCreate']);
+    Route::get('food/edit/{id}',[FoodController::class,'foodBySpecific']); //For Edit Page
+    Route::post('food/update',[FoodController::class,'foodUpdate']);
+    Route::post('food/delete/{id}',[FoodController::class,'foodDelete']);
 
+    // Order (admin)
     Route::get('order/list',[OrderController::class,'admin_order_list']);
     Route::post('order/update', [OrderController::class,'admin_order_list_update']);
     Route::post('order/detail/{code}', [OrderController::class,'admin_order_Detail']);
@@ -118,7 +120,6 @@ Route::prefix('admin')->group(function () {
 
 
     // Carousel (admin)
-
     Route::get('carousel/list', [CarouselController::class,'getCarousels']);
     Route::post('carousel/add', [CarouselController::class,'addCarousel']);
     Route::post('carousel/delete/{id}', [CarouselController::class,'deleteCarousel']);
