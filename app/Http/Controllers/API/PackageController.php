@@ -38,6 +38,8 @@ class PackageController extends Controller
                 array_push($packageFood,['food_id'=> $food_id,'package_id'=> $data->id,'created_at' => Carbon::now()]);
             }
 
+            logger($packageFood);
+
             PackageFood::insert($packageFood);
 
             DB::commit();
@@ -48,6 +50,7 @@ class PackageController extends Controller
 
         } catch (\Throwable $th) {
             DB::rollback();
+            throw $th;
             logger($th);
         }
 
