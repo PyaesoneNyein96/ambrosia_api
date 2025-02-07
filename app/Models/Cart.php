@@ -16,7 +16,7 @@ class Cart extends Model
     ];
 
     public function food(){
-        return $this->belongsTo(food::class);
+        return $this->belongsTo(Food::class);
     }
 
 
