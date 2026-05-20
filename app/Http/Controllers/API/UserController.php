@@ -71,6 +71,9 @@ class UserController extends Controller
 
         if(isset($request->role)){
             $user = User::find($request->id)->update(['role'=> $request->role]);
+        }
+        else if($request->role == 3){
+            return ;
         }else{
             $user = User::find($request->id)->update(['membership'=> $request->membership]);
         }
