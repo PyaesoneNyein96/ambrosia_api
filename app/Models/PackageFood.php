@@ -12,5 +12,6 @@ class PackageFood extends Model
     protected $fillable = [
         'food_id',
         'package_id'
+
     ];
 }

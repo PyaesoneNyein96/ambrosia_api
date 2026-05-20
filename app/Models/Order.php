@@ -28,7 +28,7 @@ class Order extends Model
     }
 
     public function bookingTable(){
-        return $this->hasMany(bookingTable::class,'order_code','order_code');
+        return $this->hasMany(BookingTable::class,'order_code','order_code');
     }
 
 
