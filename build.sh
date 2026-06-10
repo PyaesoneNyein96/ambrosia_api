@@ -15,6 +15,9 @@ composer install
 echo "Migrating Database..." 4/5
 php artisan migrate --force
 
+npm ci
+npm run build
+
 echo "Optimizing and clearing cache..." 5/5
 php artisan config:cache
 php artisan route:cache
