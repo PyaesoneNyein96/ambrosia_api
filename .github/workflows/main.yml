@@ -58,4 +58,6 @@ jobs:
           script: |
             # cd /var/www/cicd
             cd ${{ secrets.APP_PATH }}
+
+            chmod +x ./build.sh
             ./build.sh
