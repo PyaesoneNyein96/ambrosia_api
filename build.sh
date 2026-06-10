@@ -1,30 +1,28 @@
 #!/bin/bash
 
-echo "Building...deploy script" 1/5
-git pull origin cicd
+set -e
 
-echo "Creating Database If Not Exists..." 2/5
-touch ./database/database.sqlite
+echo "Deploy started..."
 
-echo "Installing Packages..." 3/5
-composer install
+git fetch origin cicd
+git reset --hard origin/cicd
 
-# echo "Publishing API Platform assets..." 4/5
-# php artisan api-platform:install
+echo "Installing PHP dependencies..."
+composer install --no-dev --optimize-autoloader
 
-echo "Migrating Database..." 4/5
-php artisan migrate --force
-
+echo "Installing Node dependencies..."
 npm ci
+
+echo "Building frontend..."
 npm run build
 
+echo "Migrating DB..."
+php artisan migrate --force
 
-echo "Optimizing and clearing cache..." 5/5
+echo "Caching..."
+php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "Deploy Complete"
-
-
-
+echo "Deploy complete"
