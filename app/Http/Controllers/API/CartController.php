@@ -35,6 +35,7 @@ class CartController extends Controller
     public function user_cart_List($id){
 
         $cartList = Cart::select('food_id','package_id' , DB::raw('COUNT(*) as count'))
+
         ->with(['food','package.food'])
         ->groupBy('food_id','package_id')
         ->where('user_id', $id)

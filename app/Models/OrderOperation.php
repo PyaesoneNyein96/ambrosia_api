@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\OrderOperation;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class OrderOperation extends Model
 {
@@ -19,16 +21,19 @@ class OrderOperation extends Model
             'total'
     ];
 
-    public function order(){
+    public function order() :BelongsTo
+    {
         return $this->belongsTo(Order::class,'order_code','order_code');
     }
 
-    public function user(){
+    public function user() :BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
 
-    public function items(){
+    public function items() :BelongsTo
+    {
         return $this->morphTo();
     }
 

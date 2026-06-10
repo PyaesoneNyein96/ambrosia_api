@@ -144,8 +144,7 @@ class AuthController extends Controller
         Validator::make($request->all(), [
             'oldPassword' => 'required',
             'newPassword' => 'required|min:6',
-            'confirmPassword' => 'required|min:6',
-            'confirmPassword' => 'required|same:newPassword',
+            'confirmPassword' => 'required|min:6|same:newPassword',
             'user_id' => 'required'
         ], [
             'oldPassword.required' => 'Current password is required',

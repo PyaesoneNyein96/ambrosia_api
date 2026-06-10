@@ -14,6 +14,7 @@ use App\Models\OrderOperation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+
 class OrderController extends Controller
 {
     //
@@ -149,7 +150,7 @@ class OrderController extends Controller
 
     public function admin_order_Detail($code){
 
-        $orderOperation = orderOperation::with('items')->where('order_code',$code)->get();
+        $orderOperation = OrderOperation::with('items')->where('order_code',$code)->get();
         $mainOrder = Order::with(['user.tag','bookingTable'])->where('order_code',$code)->first();
 
 
