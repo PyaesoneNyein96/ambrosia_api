@@ -43,3 +43,20 @@ jobs:
 
       - name: Test PHPUnit
         run: ./vendor/bin/phpunit
+
+  deploy:
+    needs: build # အပေါ်က build job (test တွေ) အောင်မြင်မှ ဒီအလုပ်ကို လုပ်မယ်
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          script: |
+            # cd /var/www/cicd
+            cd ${{ secrets.APP_PATH }}
+            ./build.sh
