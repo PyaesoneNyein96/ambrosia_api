@@ -12,6 +12,7 @@ git checkout cicd
 git reset --hard origin/cicd
 
 echo "Installing PHP dependencies..."
+export COMPOSER_ALLOW_SUPERUSER=1 
 composer install --no-dev --optimize-autoloader
 
 echo "Installing Node dependencies..."
