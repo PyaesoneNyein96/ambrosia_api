@@ -4,7 +4,11 @@ set -e
 
 echo "Deploy started..."
 
+git reset --hard
+git clean -fd
+
 git fetch origin cicd
+git checkout cicd
 git reset --hard origin/cicd
 
 echo "Installing PHP dependencies..."
