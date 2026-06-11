@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # cd /var/www/cicd
+            # cd /var/www/ambrosia-api
             cd ${{ secrets.APP_PATH }}
 
             chmod +x ./build.sh
