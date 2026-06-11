@@ -59,5 +59,11 @@ jobs:
             # cd /var/www/ambrosia-api
             cd ${{ secrets.APP_PATH }}
 
+            git reset --hard
+            git clean -fd
+            git fetch origin cicd
+            git checkout cicd
+            git reset --hard origin/cicd
+
             chmod +x ./build.sh
             ./build.sh
