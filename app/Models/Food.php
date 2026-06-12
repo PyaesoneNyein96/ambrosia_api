@@ -6,6 +6,8 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Food extends Model
 {
@@ -30,23 +32,23 @@ class Food extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function tag() :BelongsTo
+    public function tag() :BelongsToMany
     {
         return $this->belongsToMany(Tag::class,'food_tags', 'food_id', 'tag_id');
     }
 
-    public function package() :BelongsTo
+    public function package() :BelongsToMany
     {
         return $this->belongsToMany(Package::class,'package_food','package_id','food_id');
     }
 
 
-    public function orderOperation() :BelongsTo
+    public function orderOperation() :MorphMany
     {
         return $this->morphMany(OrderOperation::class,'items');
     }
 
-    public function user() :BelongsTo
+    public function user() :BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }

@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
 class OrderOperation extends Model
@@ -32,7 +33,7 @@ class OrderOperation extends Model
     }
 
 
-    public function items() :BelongsTo
+    public function items() :MorphTo
     {
         return $this->morphTo();
     }
